@@ -54,14 +54,23 @@ public class TextList {
         frequencyMap.put(text, frequency);
     }
     
-    public void filter(String filterValue) {
+    public List<String> filterAndSort(String filterValue, Order order, boolean reverse) {
+        
+        //Only filter if a value is present
+        if(filterValue != null)
+            this.filter(filterValue);
+        
+        return this.sort(order, reverse);
+    }
+    
+    private void filter(String filterValue) {
         this.texts = this.texts
                 .stream()
                 .filter(t -> (t.startsWith(filterValue)))
                 .collect(Collectors.toList());
     }
     
-    public List<String> sort(Order order, boolean reverse) {
+    private List<String> sort(Order order, boolean reverse) {
         
         switch(order) {
             case FREQUENCY:
