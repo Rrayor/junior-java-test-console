@@ -7,12 +7,10 @@ package com.benjaminsimon.testconsole;
 
 import com.benjaminsimon.testconsole.utils.MapUtils;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -25,19 +23,13 @@ public class TextList {
         FREQUENCY
     }
     
-    private List<String> texts;
-    private Map<String, Integer> frequencyMap;
+    private LinkedHashMap<String, Integer> frequencyMap;
     
     public TextList(){
-        this.texts = new ArrayList<>();
-        this.frequencyMap = new HashMap<>();
+        this.frequencyMap = new LinkedHashMap<>();
     }
     
     public void addText(String text) {
-        //Only store string if it hasn't been already
-        if(!this.texts.contains(text))
-            this.texts.add(text);
-        
         this.addOccurence(text);
     }
     
@@ -53,7 +45,7 @@ public class TextList {
         this.frequencyMap.put(text, frequency);
     }
     
-    public List<String> filterAndSort(FilterAndOrder filterAndOrder) {
+    public Map<String, Integer> filterAndSort(FilterAndOrder filterAndOrder) {
         
         //Only filter if a value is present
         if(filterAndOrder.getFilter() != null && !filterAndOrder.getFilter().isBlank())
@@ -63,46 +55,52 @@ public class TextList {
     }
     
     private void filter(String filterValue) {
-        this.texts = this.texts
-                .stream()
-                .filter(t -> (t.startsWith(filterValue)))
-                .collect(Collectors.toList());
+        LinkedHashMap<String, Integer> filteredMap = new LinkedHashMap<>();
+        
+        this.frequencyMap
+            .entrySet()
+            .stream()
+            .filter(item -> (item.getKey().startsWith(filterValue)))
+            .forEachOrdered(item -> filteredMap.put(item.getKey(), item.getValue()));
+        
+        this.frequencyMap = filteredMap;
     }
     
-    private List<String> sort(Order order, boolean reverse) {
+    private Map<String, Integer> sort(Order order, boolean reverse) {
         
         switch(order) {
             case FREQUENCY:
-                sortFrequency();
+                sortFrequency(reverse);
                 break;
             case NAME:
             default:
-                sortAlphabetic();
+                sortAlphabetic(reverse);
                 break;
         }
         
-        if(reverse)
-            Collections.reverse(this.texts);
-        
-        return this.texts;
+        return this.frequencyMap;
     }
 
-    private void sortFrequency() {
-        this.frequencyMap = MapUtils.sortByValue(this.frequencyMap);
-        
-        Set<String> orderedList = this.frequencyMap.keySet();
-        
-        orderedList.retainAll(texts);
-        
-        this.texts = new ArrayList<>(orderedList);
+    private void sortFrequency(boolean reverse) {
+        this.frequencyMap = (LinkedHashMap<String, Integer>)MapUtils.sortByValue(this.frequencyMap, reverse);
     }
 
-    private void sortAlphabetic() {
-        Collections.sort(this.texts);
+    private void sortAlphabetic(boolean reverse) {
+        LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
+        
+        Comparator<String> comparator = reverse ? Comparator.reverseOrder() : Comparator.naturalOrder();
+        
+        this.frequencyMap
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByKey(comparator))
+                .forEachOrdered(item -> sortedMap.put(item.getKey(), item.getValue()));
+        
+        this.frequencyMap = sortedMap;
     }
     
     public int getNumberOfTexts() {
-        return this.texts.size();
+        return this.frequencyMap.size();
     }
     
     public void writeTexts() {
@@ -114,10 +112,10 @@ public class TextList {
     public List<String> getFormattedText() {
         List<String> formattedTexts = new ArrayList<>();
         
-        this.texts.stream()
-                .map(item -> item + ": " + this.frequencyMap
-                        .get(item))
-                .filter(line -> (!formattedTexts.contains(line)))
+        this.frequencyMap
+                .entrySet()
+                .stream()
+                .map(item -> item.getKey() + ": " + item.getValue())
                 .forEachOrdered(line -> {
                     formattedTexts.add(line);
                 });

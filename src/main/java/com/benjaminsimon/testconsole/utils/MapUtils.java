@@ -6,6 +6,7 @@
 package com.benjaminsimon.testconsole.utils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +18,12 @@ import java.util.Map;
 public class MapUtils {
  
     //Source: StackOverflow xD
-    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map, boolean reverse) {
         List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
-        list.sort(Map.Entry.comparingByValue());
+        
+        Comparator<V> comparator = reverse ? Comparator.reverseOrder() : Comparator.naturalOrder();
+        
+        list.sort(Map.Entry.comparingByValue(comparator));
 
         Map<K, V> result = new LinkedHashMap<>();
         for (Map.Entry<K, V> entry : list) {
