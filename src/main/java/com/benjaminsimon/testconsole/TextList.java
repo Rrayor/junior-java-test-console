@@ -33,12 +33,11 @@ public class TextList {
         this.frequencyMap = new HashMap<>();
     }
     
-    public boolean contains(String text) {
-        return this.texts.contains(text);
-    }
-    
     public void addText(String text) {
-        this.texts.add(text);
+        //Only store string if it hasn't been already
+        if(!this.texts.contains(text))
+            this.texts.add(text);
+        
         this.addOccurence(text);
     }
     
@@ -51,7 +50,7 @@ public class TextList {
         //It will be at least 1
         frequency++;
         
-        frequencyMap.put(text, frequency);
+        this.frequencyMap.put(text, frequency);
     }
     
     public List<String> filterAndSort(FilterAndOrder filterAndOrder) {

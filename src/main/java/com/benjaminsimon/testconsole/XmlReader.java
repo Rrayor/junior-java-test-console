@@ -59,8 +59,7 @@ public class XmlReader {
 
                         String textContext = currentSubField.getTextContent();
         
-                        if(!textList.contains(textContext))
-                            textList.addText(textContext);
+                        textList.addText(textContext);
                     }
                 }
             }
