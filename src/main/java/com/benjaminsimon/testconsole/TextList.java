@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  */
 public class TextList {
  
-    public static enum Order{
+    public enum Order{
         NAME,
         FREQUENCY
     }

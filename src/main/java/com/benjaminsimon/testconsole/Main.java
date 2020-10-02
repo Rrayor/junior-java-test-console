@@ -63,8 +63,7 @@ public class Main {
         if(args.length > 1 && args[1] != null && args[1].length() > 0)
             if(!InputConfig.PLACEHOLDER__STRING.equals(args[1]))
                 FilterAndOrder.setFilter(args[1]);
-        
-        
+                
         //Check the third argument. Defaultly if it is an 'f', change the orderVal to FREQUENCY
         if(args.length > 2 && args[2] != null && args[2].length() > 0)
             if(InputConfig.ORDER_BY_FREQUENCY__STRING.equals(args[2]))
