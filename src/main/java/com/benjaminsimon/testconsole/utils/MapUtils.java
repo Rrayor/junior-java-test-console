@@ -17,11 +17,10 @@ import java.util.Map;
  */
 public class MapUtils {
  
-    //Source: StackOverflow xD
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map, boolean reverse) {
         List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
         
-        Comparator<V> comparator = reverse ? Comparator.reverseOrder() : Comparator.naturalOrder();
+        Comparator<V> comparator = getReverseComparator(reverse);
         
         list.sort(Map.Entry.comparingByValue(comparator));
 
@@ -31,5 +30,9 @@ public class MapUtils {
         }
 
         return result;
+    }
+    
+    public static Comparator getReverseComparator(boolean reverse) {
+        return reverse ? Comparator.reverseOrder() : Comparator.naturalOrder();
     }
 }

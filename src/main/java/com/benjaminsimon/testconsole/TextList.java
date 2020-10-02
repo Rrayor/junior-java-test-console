@@ -88,7 +88,7 @@ public class TextList {
     private void sortAlphabetic(boolean reverse) {
         LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
         
-        Comparator<String> comparator = reverse ? Comparator.reverseOrder() : Comparator.naturalOrder();
+        Comparator<String> comparator = MapUtils.getReverseComparator(reverse);
         
         this.frequencyMap
                 .entrySet()
