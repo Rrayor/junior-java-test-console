@@ -57,7 +57,7 @@ public class TextList {
     public List<String> filterAndSort(String filterValue, Order order, boolean reverse) {
         
         //Only filter if a value is present
-        if(filterValue != null)
+        if(filterValue != null && !filterValue.isBlank())
             this.filter(filterValue);
         
         return this.sort(order, reverse);
