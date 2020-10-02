@@ -35,7 +35,7 @@ public class Main {
             checkOptionalArguments(args);
             
             //Sorting
-            textList.filterAndSort(filterAndOrder.getFilter(), filterAndOrder.getOrder(), filterAndOrder.isReverse());
+            textList.filterAndSort(filterAndOrder);
             
             //Help for testing and overall feedback
             printFeedback();
