@@ -36,3 +36,13 @@ I will now further introduce the inner workings of the code.
 The entry point for console usage is the Main.java file. It handles the console arguments. Checks them for validity and calls the necessarry methods from other classes to be able to print the results to the console.
 
 It sets up the logger, creates an XmlReader and a textList instance, calls filterAndSort on textList, provides feedback and prints the results to the console.
+
+## Reading XML
+
+The class responsible for reading the xml file is XmlReader. It holds a TextList instance for readability purposes mostly. The most prominent method in this class is readXml() which requires a file path String as its parameter.
+
+The Lifecycle of an XmlReader instance starts with its constructor, which instantiates its textList property. Then when readXml() is called, it checks file path validity and if the file exists or not. If everything is ok, it creates a Document in memory based on the XML files contents.
+
+First it gets the datafield tags and traverses them. If a datafield meets certain conditions, it gets its subfields and traverses them. If the subfield matches certain conditions, then its textContext is saved to the xmlReader instances textList property.
+
+At the end of scraping the document, the readXml() method returns the instances textList property.
