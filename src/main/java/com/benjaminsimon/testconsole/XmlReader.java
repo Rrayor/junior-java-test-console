@@ -44,28 +44,21 @@ public class XmlReader {
      * @see traverseDataFields
      * @see traverseSubFields
      */
-    public TextList readXml(String filePath) throws FileNotFoundException, Exception {
+    public TextList readXml(String filePath) throws FileNotFoundException, IOException, ParserConfigurationException, SAXException {
         
         //If we read a new file, we want a new List
         this.textList.clear();
         
-        try {
-            File file = checkFile(filePath);
-            
-            Document doc = createDocument(file);
-            
-            NodeList dataFields = doc.getElementsByTagName(XmlReaderConfig.DATA_FIELD_NAME);
-            
-            //Look through the datafields
-            traverseDataFields(dataFields);
-            
-            System.out.println("File read complete!");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            
-            //No further operations can be run if file read is unsuccessful
-            System.exit(0);
-        }
+        File file = checkFile(filePath);
+
+        Document doc = createDocument(file);
+
+        NodeList dataFields = doc.getElementsByTagName(XmlReaderConfig.DATA_FIELD_NAME);
+
+        //Look through the datafields
+        traverseDataFields(dataFields);
+
+        System.out.println("File read complete!");
         
         return this.textList;
     }
@@ -75,14 +68,14 @@ public class XmlReader {
      * @param filePath the file path that needs checking.
      * @return File
      */
-    private File checkFile(String filePath) throws FileNotFoundException, Exception {
+    private File checkFile(String filePath) throws FileNotFoundException, IOException {
         
         //Separate the extension from the file name
         final String[] parts = filePath.split("\\.");
         
         //There was no '.' in the file name, hence it has no valid extension
         if(parts.length < 2) {
-            throw new Exception("File name is invalid");
+            throw new IOException("File name is invalid");
         }
         
         //The file name may have a valid extension which is after the last '.' in it
@@ -91,7 +84,7 @@ public class XmlReader {
         
         //Check if the extension is correct
         if(!ext.equals(XmlReaderConfig.SOURCE_EXT)) {
-            throw new Exception("Only" + XmlReaderConfig.SOURCE_EXT + "files are accepted");
+            throw new IOException("Only" + XmlReaderConfig.SOURCE_EXT + "files are accepted");
         }
         
         //If everything is correct so far create a file instance based on the file name

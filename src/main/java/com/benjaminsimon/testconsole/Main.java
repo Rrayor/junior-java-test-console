@@ -2,6 +2,9 @@ package com.benjaminsimon.testconsole;
 
 import com.benjaminsimon.testconsole.TextList.Order;
 import com.benjaminsimon.testconsole.config.InputConfig;
+import java.io.IOException;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -52,8 +55,11 @@ public class Main {
             
             //Put found FORMATTED values to the output stream
             textList.writeTexts();
-        } catch (Exception e) {
+        } catch (IOException | ParserConfigurationException | SAXException e) {
             System.err.println(e.getMessage());
+            
+            //No further operations can be run if file read is unsuccessful
+            System.exit(0);
         }
     }
     
