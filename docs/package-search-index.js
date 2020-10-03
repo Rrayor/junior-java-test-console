@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.benjaminsimon.testconsole"},{"l":"com.benjaminsimon.testconsole.config"},{"l":"com.benjaminsimon.testconsole.utils"}]
