@@ -12,24 +12,44 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 /**
- *
+ * Responsible for reading XML files for the project.
+ * Puts the appropriate results in a TextList instance.
+ * @see TextList
  * @author simon
  */
 public class XmlReader {
     
+    /**
+     * Reference to TextList instance that will store the appropriate values
+     * after reading the XML file
+     */
     private TextList textList;
     
+    /**
+     * Constructor
+     */
     public XmlReader() {
         this.textList = new TextList();
     }
     
-    public TextList readXml(String fileName) {
+    /**
+     * Reads an XML file according to the needs of the project, if the path provided is valid.
+     * If an exception is thrown, it exits the program.
+     * @param filePath The path to the XML file we want to read.
+     * @return TextList
+     * @see TextList
+     * @see checkFile
+     * @see createDocument
+     * @see traverseDataFields
+     * @see traverseSubFields
+     */
+    public TextList readXml(String filePath) {
         
         //If we read a new file, we want a new List
         this.textList.clear();
         
         try {
-            File file = checkFile(fileName);
+            File file = checkFile(filePath);
             
             Document doc = createDocument(file);
             
@@ -49,10 +69,15 @@ public class XmlReader {
         return this.textList;
     }
     
-    private File checkFile(String fileName) throws Exception {
+    /**
+     * Checks the validity of a file path according to the needs of the project.
+     * @param filePath the file path that needs checking.
+     * @return File
+     */
+    private File checkFile(String filePath) throws Exception {
         
         //Separate the extension from the file name
-        final String[] parts = fileName.split("\\.");
+        final String[] parts = filePath.split("\\.");
         
         //There was no '.' in the file name, hence it has no valid extension
         if(parts.length < 2) {
@@ -69,17 +94,23 @@ public class XmlReader {
         }
         
         //If everything is correct so far create a file instance based on the file name
-        File file = new File(fileName);
+        File file = new File(filePath);
         
         //Check if the file exists
         if(!file.exists()) {
-            throw new Exception("File not found:\n" + fileName);
+            throw new Exception("File not found:\n" + filePath);
         }
         
         //No errors were found, return the file instance
         return file;
     }
     
+    
+    /**
+     * Creates a Document instance from the File instance provided.
+     * @param file The file we need to create a Document from.
+     * @return Document
+     */
     private Document createDocument(File file) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -88,6 +119,14 @@ public class XmlReader {
         return doc;
     }
 
+    /**
+     * Loops through the datafields provided.
+     * Checks them according to the needs of the project and if the current
+     * datafield is in accordance with what we need, calls the traverseSubFields
+     * method with its subfield tags as parameter.
+     * @param dataFields A NodeList of datafields to traverse
+     * @see traverseSubFields
+     */
     private void traverseDataFields(NodeList dataFields) throws DOMException {
         for(int i = 0; i < dataFields.getLength(); i++) {
             
@@ -111,6 +150,13 @@ public class XmlReader {
         }
     }
 
+    /**
+     * Loops through the subfields provided. If they are in accordance with what
+     * we need, adds their textContect to textList.
+     * @param subFields NodeList of subfields to traverse.
+     * @see traverseDataFields
+     * @see textList
+     */
     private void traverseSubFields(NodeList subFields) throws DOMException {
         for(int i = 0; i < subFields.getLength(); i++) {
             

@@ -9,10 +9,20 @@ import com.benjaminsimon.testconsole.config.InputConfig;
  */
 public class Main {
     
+    /**
+     * Stores filtering and ordering options.
+     * @see FilterAndOrder
+     */
     private static final FilterAndOrder filterAndOrder = new FilterAndOrder();
     
     /**
+     * Entry point for running in command line
      * @param args the command line arguments
+     * @see welcomeMessage
+     * @see XmlReader
+     * @see TextList
+     * @see checkOptionalArguments
+     * @see printFeedback
      */
     public static void main(String[] args) {
         
@@ -47,6 +57,11 @@ public class Main {
         }
     }
     
+    /**
+     * Checks if optional arguments are present and valid.
+     * If so, sets them as filtering and ordering options.
+     * @param args the command line arguments
+     */
     private static void checkOptionalArguments(String[] args) {
         
         //Check the second argument. If it is valid It is assigned to the filter.
@@ -65,6 +80,9 @@ public class Main {
                 filterAndOrder.setReverse(true); //else it remains as default: false
     }
     
+    /**
+     * Greets the user and prints instructions.
+     */
     private static void welcomeMessage() {
         System.out.println("Welcome! Please enter a file path to begin!");
         System.out.println("To filter by name - SECOND argument");
@@ -74,6 +92,10 @@ public class Main {
         System.out.println("");
     }
 
+    /**
+     * Provides feedback for the user.
+     * @param numberOfItems An integer to tell the user the number of items found.
+     */
     private static void printFeedback(int numberOfItems) {
         System.out.println("You filtered by: " + (filterAndOrder.getFilter() == null ? "No filter value was given" : filterAndOrder.getFilter()));
         System.out.println("You ordered by: " + filterAndOrder.getOrder().name());
