@@ -25,6 +25,14 @@ To run the program, you have to use command line. After the name of the file you
     
     If you use any other character or word, the program will fall back to ordering naturally.
     
-   ## Important
-    
-    The default placeholder character is '_' (underscore). If you want to make sure that your argument does not modify your results, use it. Future changes may add other arguments but the project will reserve the placeholder character.
+## Important
+The default placeholder character is '_' (underscore). If you want to make sure that your argument does not modify your results, use it. Future changes may add other arguments but the project will reserve the placeholder character.
+
+# For Developers and Reviewers
+I will now further introduce the inner workings of the code.
+
+## Entry
+
+The entry point for console usage is the Main.java file. It handles the console arguments. Checks them for validity and calls the necessarry methods from other classes to be able to print the results to the console.
+
+It sets up the logger, creates an XmlReader and a textList instance, calls filterAndSort on textList, provides feedback and prints the results to the console.
