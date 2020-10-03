@@ -75,3 +75,14 @@ The TextList class also holds the Order enum, which has two values:
  * FREQUENCY
  
 I use this enum for security and compatibility purposes. Any application that uses this API has to convert its input to this enum, hence it's more secure and prevents too much overhead creating compatibility method for every type of client.
+
+## MapUtils class
+
+The Maputils class stores two utility functions:
+ * sortByValue sorts a map by its values. if its reverse parameter is true, then in reverse order.
+ * getReverseComparator returns Comparator.reverseOrder() or Comparator.naturalOrder() based on its boolean reverse parameter.
+ 
+## Logging
+ The TestLogger class is a simple logger class. It has a setup method and LOGFILE_PATH constant field. The setup method sets up the logger to use the provided filePath for logging in .txt format. If its boolean useConsole parameter is false, then it won't use console for logging at all. It has an overrided version, which doesn't require any parameters, instead calls it with true value.
+ 
+ The default behaviour of the logger is to use the console as well as the file for logging.
