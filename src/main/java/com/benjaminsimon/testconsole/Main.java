@@ -2,7 +2,9 @@ package com.benjaminsimon.testconsole;
 
 import com.benjaminsimon.testconsole.TextList.Order;
 import com.benjaminsimon.testconsole.config.InputConfig;
+import com.benjaminsimon.testconsole.logging.TestLogger;
 import java.io.IOException;
+import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
@@ -11,6 +13,11 @@ import org.xml.sax.SAXException;
  * @author simon
  */
 public class Main {
+    
+    /**
+     * Logger for the class
+     */
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     
     /**
      * Stores filtering and ordering options.
@@ -33,6 +40,8 @@ public class Main {
         welcomeMessage();
         
         try {
+            setupLogger();
+            
             XmlReader xmlReader = new XmlReader();
             
             //No arguments were given. At least a file path is required as argument
@@ -56,10 +65,21 @@ public class Main {
             //Put found FORMATTED values to the output stream
             textList.writeTexts();
         } catch (IOException | ParserConfigurationException | SAXException e) {
-            System.err.println(e.getMessage());
             
             //No further operations can be run if file read is unsuccessful
             System.exit(0);
+        }
+    }
+
+    /**
+     * Sets up TestLogger
+     * @see TestLogger
+     */
+    private static void setupLogger() {
+        try {
+            TestLogger.setup();
+        } catch (IOException | IllegalArgumentException e) {
+            LOGGER.warning(e.getMessage());
         }
     }
     

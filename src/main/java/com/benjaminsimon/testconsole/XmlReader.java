@@ -4,6 +4,7 @@ import com.benjaminsimon.testconsole.config.XmlReaderConfig;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,6 +20,11 @@ import org.xml.sax.SAXException;
  * @author simon
  */
 public class XmlReader {
+    
+    /**
+     * Logger for the class
+     */
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     
     /**
      * Reference to TextList instance that will store the appropriate values
@@ -38,6 +44,8 @@ public class XmlReader {
      * @param filePath The path to the XML file we want to read.
      * @return TextList
      * @throws java.io.FileNotFoundException
+     * @throws javax.xml.parsers.ParserConfigurationException
+     * @throws org.xml.sax.SAXException
      * @see TextList
      * @see checkFile
      * @see createDocument
@@ -49,16 +57,22 @@ public class XmlReader {
         //If we read a new file, we want a new List
         this.textList.clear();
         
-        File file = checkFile(filePath);
+        try {
+            File file = checkFile(filePath);
 
-        Document doc = createDocument(file);
+            Document doc = createDocument(file);
 
-        NodeList dataFields = doc.getElementsByTagName(XmlReaderConfig.DATA_FIELD_NAME);
+            NodeList dataFields = doc.getElementsByTagName(XmlReaderConfig.DATA_FIELD_NAME);
 
-        //Look through the datafields
-        traverseDataFields(dataFields);
+            //Look through the datafields
+            traverseDataFields(dataFields);
 
-        System.out.println("File read complete!");
+            LOGGER.info("File read complete!");
+        } catch (IOException | ParserConfigurationException | SAXException | DOMException exception) {
+            LOGGER.severe(exception.getMessage());
+            
+            throw exception;
+        }
         
         return this.textList;
     }
