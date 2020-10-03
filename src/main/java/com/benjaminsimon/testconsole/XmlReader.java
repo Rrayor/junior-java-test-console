@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -16,13 +17,16 @@ import org.xml.sax.SAXException;
  */
 public class XmlReader {
     
+    private TextList textList;
+    
     public XmlReader() {
+        this.textList = new TextList();
     }
     
     public TextList readXml(String fileName) {
         
         //If we read a new file, we want a new List
-        TextList textList = new TextList();
+        this.textList.clear();
         
         try {
             File file = checkFile(fileName);
@@ -32,37 +36,7 @@ public class XmlReader {
             NodeList dataFields = doc.getElementsByTagName(XmlReaderConfig.DATA_FIELD_NAME);
             
             //Look through the datafields
-            for(int i = 0; i < dataFields.getLength(); i++) {
-                
-                Element currentDataField = (Element) dataFields.item(i);
-                
-                //Does this datafield have the attribute, we are looking for?
-                if(!XmlReaderConfig.DATA_FIELD_ATTR_FILTER_VALUE.equals(currentDataField.getAttribute(XmlReaderConfig.DATA_FIELD_ATTR_FILTER_NAME))) {
-                    continue;
-                }
-                
-                //If the datafield has the correct attribute, get its subfields
-                NodeList subFields = currentDataField.getElementsByTagName(XmlReaderConfig.SUBFIELD_NAME);
-                
-                //If no subfields were found, go on to the next datafield
-                if(subFields == null || subFields.getLength() <= 0) {
-                    continue;
-                }
-                
-                //Look through the subfields
-                for(int j = 0; j < subFields.getLength(); j++) {
-                    
-                    Element currentSubField = (Element) subFields.item(j);
-
-                    //If the current subfield has the correct attribute save it
-                    if(XmlReaderConfig.SUBFIELD_ATTR_FILTER_VALUE.equals(currentSubField.getAttribute(XmlReaderConfig.SUBFIELD_ATTR_FILTER_NAME))) {
-
-                        String textContext = currentSubField.getTextContent();
-        
-                        textList.addText(textContext);
-                    }
-                }
-            }
+            traverseDataFields(dataFields);
             
             System.out.println("File read complete!");
         } catch (Exception e) {
@@ -72,7 +46,7 @@ public class XmlReader {
             System.exit(0);
         }
         
-        return textList;
+        return this.textList;
     }
     
     private File checkFile(String fileName) throws Exception {
@@ -94,7 +68,7 @@ public class XmlReader {
             throw new Exception("Only" + XmlReaderConfig.SOURCE_EXT + "files are accepted");
         }
         
-        //If everythin is correct so far create a file instance based on the file name
+        //If everything is correct so far create a file instance based on the file name
         File file = new File(fileName);
         
         //Check if the file exists
@@ -112,5 +86,43 @@ public class XmlReader {
         Document doc = builder.parse(file);
         
         return doc;
+    }
+
+    private void traverseDataFields(NodeList dataFields) throws DOMException {
+        for(int i = 0; i < dataFields.getLength(); i++) {
+            
+            Element currentDataField = (Element) dataFields.item(i);
+            
+            //Does this datafield have the attribute, we are looking for?
+            if(!XmlReaderConfig.DATA_FIELD_ATTR_FILTER_VALUE.equals(currentDataField.getAttribute(XmlReaderConfig.DATA_FIELD_ATTR_FILTER_NAME))) {
+                continue;
+            }
+            
+            //If the datafield has the correct attribute, get its subfields
+            NodeList subFields = currentDataField.getElementsByTagName(XmlReaderConfig.SUBFIELD_NAME);
+            
+            //If no subfields were found, go on to the next datafield
+            if(subFields == null || subFields.getLength() <= 0) {
+                continue;
+            }
+            
+            //Look through the subfields
+            traverseSubFields(subFields);
+        }
+    }
+
+    private void traverseSubFields(NodeList subFields) throws DOMException {
+        for(int i = 0; i < subFields.getLength(); i++) {
+            
+            Element currentSubField = (Element) subFields.item(i);
+            
+            //If the current subfield has the correct attribute save it
+            if(XmlReaderConfig.SUBFIELD_ATTR_FILTER_VALUE.equals(currentSubField.getAttribute(XmlReaderConfig.SUBFIELD_ATTR_FILTER_NAME))) {
+                
+                String textContext = currentSubField.getTextContent();
+                
+                this.textList.addText(textContext);
+            }
+        }
     }
 }

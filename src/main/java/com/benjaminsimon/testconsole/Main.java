@@ -38,8 +38,7 @@ public class Main {
             textList.filterAndSort(filterAndOrder);
             
             //Help for testing and overall feedback
-            printFeedback();
-            System.out.println(textList.getNumberOfTexts() + " items were found");
+            printFeedback(textList.getNumberOfTexts());
             
             //Put found FORMATTED values to the output stream
             textList.writeTexts();
@@ -48,21 +47,6 @@ public class Main {
         }
     }
     
-    private static void welcomeMessage() {
-        System.out.println("Welcome! Please enter a file path to begin!");
-        System.out.println("To filter by name - SECOND argument");
-        System.out.println("To set ordering by frequency - Enter 'f' for the THIRD argument");
-        System.out.println("To reverse the order - Enter 'rev' for the FOURTH argument");
-        System.out.println("To skip any argument (expect for the file name - that is required)- Enter '_' in place of it");
-        System.out.println("");
-    }
-
-    private static void printFeedback() {
-        System.out.println("You filtered by: " + (filterAndOrder.getFilter() == null ? "No filter value was given" : filterAndOrder.getFilter()));
-        System.out.println("You ordered by: " + filterAndOrder.getOrder().name());
-        System.out.println("Reverse: " + filterAndOrder.isReverse());
-    }
-
     private static void checkOptionalArguments(String[] args) {
         
         //Check the second argument. If it is valid It is assigned to the filter.
@@ -79,5 +63,21 @@ public class Main {
         if(args.length > 3 && args[3] != null && args[3].length() > 0)
             if(InputConfig.REVERSE_ORDER__STRING.equals(args[3]))
                 filterAndOrder.setReverse(true); //else it remains as default: false
+    }
+    
+    private static void welcomeMessage() {
+        System.out.println("Welcome! Please enter a file path to begin!");
+        System.out.println("To filter by name - SECOND argument");
+        System.out.println("To set ordering by frequency - Enter 'f' for the THIRD argument");
+        System.out.println("To reverse the order - Enter 'rev' for the FOURTH argument");
+        System.out.println("To skip any argument (expect for the file name - that is required)- Enter '_' in place of it");
+        System.out.println("");
+    }
+
+    private static void printFeedback(int numberOfItems) {
+        System.out.println("You filtered by: " + (filterAndOrder.getFilter() == null ? "No filter value was given" : filterAndOrder.getFilter()));
+        System.out.println("You ordered by: " + filterAndOrder.getOrder().name());
+        System.out.println("Reverse: " + filterAndOrder.isReverse());
+        System.out.println(numberOfItems + " items were found");
     }
 }

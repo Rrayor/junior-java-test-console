@@ -29,12 +29,12 @@ public class TextList {
         this.frequencyMap = new LinkedHashMap<>();
     }
     
-    public void addText(String text) {
-        this.addOccurence(text);
+    public void clear() {
+        this.frequencyMap.clear();
     }
     
-    private void addOccurence(String text) {
-         //If the given text have already appeared, get its value from the frequencies map.
+    public void addText(String text) {
+        //If the given text have already appeared, get its value from the frequencies map.
         //Else start from 0
         int frequency = (int)this.frequencyMap.getOrDefault(text, 0);
         
