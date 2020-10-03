@@ -66,17 +66,17 @@ public class Main {
         
         //Check the second argument. If it is valid It is assigned to the filter.
         if(args.length > 1 && args[1] != null && args[1].length() > 0)
-            if(!InputConfig.PLACEHOLDER__STRING.equals(args[1]))
+            if(!InputConfig.PLACEHOLDER_STRING.equals(args[1]))
                 filterAndOrder.setFilter(args[1]);
                 
         //Check the third argument. Defaultly if it is an 'f', change the orderVal to FREQUENCY
         if(args.length > 2 && args[2] != null && args[2].length() > 0)
-            if(InputConfig.ORDER_BY_FREQUENCY__STRING.equals(args[2]))
+            if(InputConfig.ORDER_BY_FREQUENCY_STRING.equals(args[2]))
                 filterAndOrder.setOrder(Order.FREQUENCY); //else it stays as default: Order.NAME
         
         //Check the fourth argument. Defaultly if it is 'rev', set reverse to true
         if(args.length > 3 && args[3] != null && args[3].length() > 0)
-            if(InputConfig.REVERSE_ORDER__STRING.equals(args[3]))
+            if(InputConfig.REVERSE_ORDER_STRING.equals(args[3]))
                 filterAndOrder.setReverse(true); //else it remains as default: false
     }
     
