@@ -2,6 +2,7 @@ package com.benjaminsimon.testconsole;
 
 import com.benjaminsimon.testconsole.config.XmlReaderConfig;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -33,17 +34,17 @@ public class XmlReader {
     }
     
     /**
-     * Reads an XML file according to the needs of the project, if the path provided is valid.
-     * If an exception is thrown, it exits the program.
+     * Reads an XML file according to the needs of the project, if the path provided is valid.If an exception is thrown, it exits the program.
      * @param filePath The path to the XML file we want to read.
      * @return TextList
+     * @throws java.io.FileNotFoundException
      * @see TextList
      * @see checkFile
      * @see createDocument
      * @see traverseDataFields
      * @see traverseSubFields
      */
-    public TextList readXml(String filePath) {
+    public TextList readXml(String filePath) throws FileNotFoundException, Exception {
         
         //If we read a new file, we want a new List
         this.textList.clear();
@@ -74,7 +75,7 @@ public class XmlReader {
      * @param filePath the file path that needs checking.
      * @return File
      */
-    private File checkFile(String filePath) throws Exception {
+    private File checkFile(String filePath) throws FileNotFoundException, Exception {
         
         //Separate the extension from the file name
         final String[] parts = filePath.split("\\.");
@@ -98,7 +99,7 @@ public class XmlReader {
         
         //Check if the file exists
         if(!file.exists()) {
-            throw new Exception("File not found:\n" + filePath);
+            throw new FileNotFoundException("File not found:\n" + filePath);
         }
         
         //No errors were found, return the file instance
