@@ -86,3 +86,11 @@ The Maputils class stores two utility functions:
  The TestLogger class is a simple logger class. It has a setup method and LOGFILE_PATH constant field. The setup method sets up the logger to use the provided filePath for logging in .txt format. If its boolean useConsole parameter is false, then it won't use console for logging at all. It has an overrided version, which doesn't require any parameters, instead calls it with true value.
  
  The default behaviour of the logger is to use the console as well as the file for logging.
+
+## Config classes
+
+XmlReaderConfig class holds the constants needed for XmlReader to process XML files.
+
+InputConfig class holds the constant values for arguments.
+
+Creating real config files was out of the scope of the project. I may do it later. However This solution is still better than "magic strings".
