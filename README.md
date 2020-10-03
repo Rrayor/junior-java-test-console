@@ -25,6 +25,6 @@ To run the program, you have to use command line. After the name of the file you
     
     If you use any other character or word, the program will fall back to ordering naturally.
     
-    ##Important
+   ## Important
     
     The default placeholder character is '_' (underscore). If you want to make sure that your argument does not modify your results, use it. Future changes may add other arguments but the project will reserve the placeholder character.
