@@ -46,3 +46,32 @@ The Lifecycle of an XmlReader instance starts with its constructor, which instan
 First it gets the datafield tags and traverses them. If a datafield meets certain conditions, it gets its subfields and traverses them. If the subfield matches certain conditions, then its textContext is saved to the xmlReader instances textList property.
 
 At the end of scraping the document, the readXml() method returns the instances textList property.
+
+## TextList class
+
+The TextList class handles the data saved from the XML file. It has a LinkedHashMap<String, Integer> textMap property, where it stores its data. It executes all of its operations on this map.
+
+It can:
+ * clear the map
+ * add to the map
+ * filter the map
+ * sort the map by keys (alphabetically)
+ * sort the map by values (by frequency)
+ 
+It also has some utility functions such as:
+ * getting the number of items in its map
+ * formatting the map to human readable String
+ * write the human readable Strings to the console
+ 
+For filtering and ordering the program uses the FilterAndOrder class. Every instance of FilterAndOrder holds 3 properties:
+ * String filter
+ * Order order
+ * boolean reverse
+ 
+It is useful mainly for readability as we only need to pass around these objects. In the future, it could handle its own validation as well.
+
+The TextList class also holds the Order enum, which has two values:
+ * NAME
+ * FREQUENCY
+ 
+I use this enum for security and compatibility purposes. Any application that uses this API has to convert its input to this enum, hence it's more secure and prevents too much overhead creating compatibility method for every type of client.
